@@ -1,4 +1,4 @@
-package Pop3Client;
+package Ex2_Pop3Client;
 
 import java.io.*;
 import java.net.Socket;
@@ -10,7 +10,6 @@ public class Pop3Client {
     private BufferedWriter writer;
 
     public void connect(String host, int port) throws IOException {
-        //socket erstellen mit hostname und port
         socket = new Socket(host,port);
         reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -39,6 +38,7 @@ public class Pop3Client {
     }
 
     public String sendCommand(String command) throws IOException {
+        //send command + Carriage Return and Line Feed = \n
         writer.write(command + "\n");
         writer.flush();
         return readResponse();
@@ -53,12 +53,12 @@ public class Pop3Client {
         Pop3Client client = new Pop3Client();
         try {
             client.connect(host, 110);
-            client.sendCommand("USER " + username);
-            client.sendCommand("PASS " + password);
+            client.sendCommand("user" + " " + username);
+            client.sendCommand("PASS" + " " + password);
 
             client.sendCommand("LIST");
 
-            client.sendCommand("RETR 1");
+            client.sendCommand("RETR 3");
             String response = client.readResponse();
             while (!response.isEmpty()) {
                 response = client.readResponse();
